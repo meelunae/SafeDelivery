@@ -1,0 +1,8 @@
+# Annoying macOS indexing file
+.DS_Store
+
+# Ignore the main config file to avoid committing our SSID/password
+IoTClient/config.h
+
+# Ignore the certs folder for security reasons, instructions on how to get them are provided through README.md
+certs/

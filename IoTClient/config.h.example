@@ -1,0 +1,18 @@
+// config.h
+
+#define SS_PIN  5  // ESP32 pin GPIO5 
+#define RST_PIN 27 // ESP32 pin GPIO27 
+
+const char* ssid = "yourSSID";
+const char* password = "yourPassword";
+
+// The following IP addresses assume you're using an iPhone hotspot as gateway
+IPAddress localIP(172, 20, 10, 2);
+IPAddress gateway(172, 20, 10, 1);
+IPAddress mask(255, 255, 255, 240);
+
+const char* root_ca = "content of your ca.crt"
+
+const char* client_key = "content of your client.key"
+
+const char* client_cert = "content of your client.cert"
