@@ -6,11 +6,15 @@
 const char* ssid = "yourSSID";
 const char* password = "yourPassword";
 
-// The following IP addresses assume you're using an iPhone hotspot as gateway
+// The following example IP addresses assume you're using an iPhone hotspot as gateway
 IPAddress localIP(172, 20, 10, 2);
 IPAddress gateway(172, 20, 10, 1);
 IPAddress mask(255, 255, 255, 240);
+const char* hostname = "example.org";
+unsigned int port = 1337;
 
+
+// Each line of the certificates has to begin end in '\n " \' to ensure you're going to a new line.
 const char* root_ca = "content of your ca.crt"
 
 const char* client_key = "content of your client.key"

@@ -5,33 +5,37 @@
 #include <WiFiClientSecure.h>
 
 MFRC522 rfid(SS_PIN, RST_PIN);
+WiFiClientSecure client;
 
 void setup() {
   Serial.begin(115200);
+  Serial.setDebugOutput(true);
   delay(2000);
-  SPI.begin(); // init bus SPI
-  rfid.PCD_Init(); // init modulo FRC522
+  SPI.begin();      // init bus SPI
+  rfid.PCD_Init();  // init modulo FRC522
   initializeWiFi();
   Serial.println("Tap an RFID/NFC tag on the RFID-RC522 reader");
 }
 
-void loop(){
+void loop() {
   // Nuovo tag disponibile
-  if (rfid.PICC_IsNewCardPresent()) { 
-    if (rfid.PICC_ReadCardSerial()) {
-      MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
-      Serial.print("RFID/NFC Tag Type: ");
-      Serial.println(rfid.PICC_GetTypeName(piccType));
-
-      // stampa dell'UID del tag in formato esadecimale
-      Serial.print("UID:");
-      for (int i = 0; i < rfid.uid.size; i++) {
-        Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
-        Serial.print(rfid.uid.uidByte[i], HEX);
-      }
-      Serial.println();
-      rfid.PICC_HaltA();
-      rfid.PCD_StopCrypto1();
+  if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
+        String tagID = "";
+        for (byte i = 0; i < rfid.uid.size; i++) {
+            tagID += String(rfid.uid.uidByte[i] < 0x10 ? "0" : "");
+            tagID += String(rfid.uid.uidByte[i], HEX);
+        }
+        sendToServer(tagID);
+        delay(1000); // Prevent multiple readings in a short time
     }
-  }
+}
+
+void sendToServer(String tagID) {
+        delay(1000);
+        Serial.println("Sending tag ID:  " + tagID);
+        client.println("GET /?packageID=" + tagID + " HTTP/1.0");
+        client.println("Host: " + String(hostname));
+        client.println("Connection: keep-alive");
+        client.println();
+        Serial.println("Message sent to server");
 }
