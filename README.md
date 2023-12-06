@@ -9,6 +9,8 @@ For the client portion of the project, you **must** create a valid config.h file
 
 These commands assume you are inside the project root directory.
 
+**Note: you need to have a different CN (common name) for your CA and your server/client, or the certificates will be recognized as self-signed!** 
+
 **Create a folder to store your certificates**
 
     mkdir certs && cd certs
@@ -34,7 +36,7 @@ These commands assume you are inside the project root directory.
 
 **Create the Client private key, certificate request and certificate**
 
-    cd .. /Client
+    cd ../Client
     openssl genpkey -algorithm RSA -out client.key
     openssl req -new -key client.key -out client.csr
     openssl x509 -req -in client.csr -CA ../CA/ca.crt -CAkey ../CA/ca.key -out client.crt -CAcreateserial
