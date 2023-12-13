@@ -16,7 +16,9 @@ contract Shipment {
 
   //mapping(string => Package) packages;
   Package[] packages;
+  address owner;
 
+  event Funded(address indexed sender, uint256 amount);
   event PackageCreated(string packageId, address sender, address receiver, uint256 value);
   event DeliveryStatusUpdated(string packageId, DeliveryStatus status);
   event PackageDelivered(string packageId, address sender, uint256 amount);
@@ -51,14 +53,27 @@ contract Shipment {
     revert("Package not found");
   }
 
+
+      // Fallback function allows the contract to receive Ether
+    function() external payable {
+        // You can handle the received Ether here if needed
+    }
+
+    // Function to allow the owner to send funds to the contract
+    function fundContract() external payable onlyOwner {
+        require(msg.value > 0, "Sent value must be greater than 0");
+        
+        // You can add custom logic here to handle the received funds
+        emit Funded(msg.sender, msg.value);
+    }
+
   // Function responsible for package delivery and payouts
-  function deliverPackage(string memory _packageId) public {
+  function deliverPackage(string memory _packageId) public payable {
     for (uint i = 0; i < packages.length; i++) {
       if (keccak256(abi.encodePacked(packages[i].packageId)) == keccak256(abi.encodePacked(_packageId))) {
         require(msg.sender == packages[i].receiver, "Only the receiver can mark the package as delivered");
         require(packages[i].status != DeliveryStatus.DELIVERED, "Package has already been delivered");
         
-        // Transfer amount to sender
         address payable sender = address(uint160(packages[i].sender));
         sender.transfer(packages[i].amount);
 

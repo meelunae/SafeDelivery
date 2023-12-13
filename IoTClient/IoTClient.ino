@@ -33,7 +33,7 @@ void loop() {
 void sendToServer(String tagID) {
         delay(1000);
         Serial.println("Sending tag ID:  " + tagID);
-        client.println("GET /?packageID=" + tagID + " HTTP/1.0");
+        client.println("GET /markAsDelivered?packageID=" + tagID + " HTTP/1.0");
         client.println("Host: " + String(hostname));
         client.println("Connection: keep-alive");
         client.println();
