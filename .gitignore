@@ -10,4 +10,3 @@ certs/
 # Ignore build files from tsc, except the migration files from truffle
 Server/*.js
 Server/config/*.js
-!Server/scontract/*.js
