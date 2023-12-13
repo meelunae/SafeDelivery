@@ -6,3 +6,8 @@ IoTClient/config.h
 
 # Ignore the certs folder for security reasons, instructions on how to get them are provided through README.md
 certs/
+
+# Ignore build files from tsc, except the migration files from truffle
+Server/*.js
+Server/config/*.js
+!Server/scontract/*.js
