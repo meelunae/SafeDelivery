@@ -8667,12 +8667,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x309C74ee284BeF80d77704c5512681D43c3f279E",
-      "transactionHash": "0x6d08943394672dd0e8c8129ee965a8e389bddf5374d78d6b61288977b9d6af51"
+      "address": "0x4f6f4c0d36C6c3b8d1bC380c86D26c13A8743693",
+      "transactionHash": "0xde740029fb7c7742f40b3d23067299911b891afb90aa56d2d916b4ce3091d38c"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2023-12-13T19:19:21.028Z",
+  "updatedAt": "2023-12-18T12:57:44.638Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
