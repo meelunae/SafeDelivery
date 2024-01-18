@@ -1,6 +1,12 @@
 # Annoying macOS indexing file
 .DS_Store
 
+# Ignore vscode environment config
+.vscode
+
+# Ignore smart contract built JSON files
+Contract/build/
+
 # Ignore the main config file to avoid committing our SSID/password
 IoTClient/config.h
 
