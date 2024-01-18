@@ -16,6 +16,10 @@ interface IPackageQuerystring {
   packageID: string;
 }
 
+interface IFetchAllPackagesQuerystring {
+  callerAddress: string;
+}
+
 const server = fastify({
   logger: pino({level : "info"}),
   http2: true,
@@ -30,19 +34,10 @@ server.get('/', async (request, reply) => {
     return 'pong\n';
 });
 
-server.get<{Querystring: IPackageQuerystring}>('/shipPackage', async (request, response) => {
+server.get<{Querystring: IFetchAllPackagesQuerystring}>('/getAllPackages', async (request, reply) => {
   try {
-  const { packageID } = request.query;
-  console.log(`Received ${packageID} from client`)
-  return `The package ${packageID} has been successfully scanned.`;
-  } catch (e) {
-    console.log("SSL error: " + e);
-  }
-  });
-
-server.get('/getAllPackages', async (request, reply) => {
-  try {
-    const response = await contractInstance.methods['getAllPackages']().call({from: env.getEnvVar('FROM_ADDRESS')})
+    const { callerAddress } = request.query;
+    const response = await contractInstance.methods['getAllPackages']().call({from: callerAddress})
     const parsedResponse = JSONbig.stringify(response, null, 2);
     reply.send(parsedResponse)
   } catch (e) {
@@ -54,7 +49,7 @@ server.get('/getAllPackages', async (request, reply) => {
 server.get<{Querystring: IPackageQuerystring}>('/getPackageInfo', async (request, reply) => {
   try {
     const { packageID } = request.query;
-    const response = await (contractInstance.methods.getPackageById as any)(packageID).call({from: env.getEnvVar('FROM_ADDRESS')});
+    const response = await (contractInstance.methods.getPackageById as any)(packageID).call({from: env.getEnvVar('CONTRACT_OWNER')});
     const parsedResponse = JSONbig.stringify(response, null, 2);
     reply.send(parsedResponse)
   } catch (e) {
@@ -86,10 +81,7 @@ server.get<{Querystring: IPackageQuerystring}>('/markAsDelivered', async (reques
       reject(e)
     }
   })
-
   reply.send(confirmationNumber)
-
-  
 })
 
 server.listen({port: 8000, host: '0.0.0.0'}, (err, address) => {

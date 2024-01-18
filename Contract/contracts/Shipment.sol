@@ -129,9 +129,7 @@ contract Shipment {
     revert("Package not found");
   }
 
-
     // START OF FUNCTIONS TO HANDLE CONTRACT FUNDING
-
     // Fallback function allows the contract to receive Ether
     function() external payable {
     }

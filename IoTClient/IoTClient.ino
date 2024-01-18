@@ -38,4 +38,19 @@ void sendToServer(String tagID) {
         client.println("Connection: keep-alive");
         client.println();
         Serial.println("Message sent to server");
+
+        while (client.connected()) {
+          String line = client.readStringUntil('\n');
+          if (line == "\r") {
+            Serial.println("Response Headers received!");
+            break;
+          }
+        }
+
+   // Printing the response from server (if available) 
+    while (client.available()) {
+      char c = client.read();
+      Serial.write(c);
+    }
+    Serial.println("Complete!");
 }
